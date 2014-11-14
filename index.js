@@ -9,7 +9,7 @@ var http = require("http");
 
 for (var b = 600; b >= 0; b--) {
   var url = 'http://www.cyscc.gov.tw/chinese/Discussing_Detail.aspx?s=' + b
-  download(url , function(data, url) {
+  download(url , function(data, url, num) {
     if (data) {
           var $ = cheerio.load(data);
           $('#ctl00_ContentPlaceHolder1_fvDetail_Label2').each(function(i, e) {
@@ -17,7 +17,7 @@ for (var b = 600; b >= 0; b--) {
         });
     }
   },
-  url);
+  b);
   //console.log('http://www.cyscc.gov.tw/chinese/Discussing_Detail.aspx?s=' + b);
 }
 
@@ -26,14 +26,14 @@ for (var b = 600; b >= 0; b--) {
 
 
 
-function download(url, callback) {
+function download(url, callback, num) {
   http.get(url, function(res) {
     var data = "";
     res.on('data', function (chunk) {
       data += chunk;
     });
     res.on("end", function() {
-      callback(data, url);
+      callback(data, url, num);
     });
   }).on("error", function() {
     callback(null);
